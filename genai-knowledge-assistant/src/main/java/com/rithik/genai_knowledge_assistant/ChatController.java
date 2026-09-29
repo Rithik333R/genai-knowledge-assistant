@@ -13,6 +13,7 @@ public class ChatController {
 
     @PostMapping("/chat")
     public ChatResponse chat(@RequestBody ChatRequest request) {
-        return geminiService.ask(request.question());
+        double temperature = request.temperature() != null ? request.temperature() : 0.7;
+        return geminiService.ask(request.question(), temperature);
     }
 }

@@ -1,5 +1,7 @@
 package com.rithik.genai_knowledge_assistant;
+
 import com.google.genai.Client;
+import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
 import com.google.genai.types.GenerateContentResponseUsageMetadata;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,13 @@ public class GeminiService {
 
     private final Client client = new Client();
 
-    public ChatResponse ask(String question) {
+    public ChatResponse ask(String question, double temperature) {
+        GenerateContentConfig config = GenerateContentConfig.builder()
+                .temperature((float) temperature)
+                .build();
+
         GenerateContentResponse response =
-                client.models.generateContent("gemini-2.5-flash", question, null);
+                client.models.generateContent("gemini-2.5-flash", question, config);
 
         int input = 0, output = 0, total = 0;
         Optional<GenerateContentResponseUsageMetadata> usage = response.usageMetadata();
